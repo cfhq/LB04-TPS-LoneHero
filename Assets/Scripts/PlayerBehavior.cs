@@ -22,9 +22,12 @@ public class PlayerBehavior : MonoBehaviour
     public float BulletSpeed = 100f;
     private bool _isShooting;
 
+    public GameBehavior GameManager;
+
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        GameManager = GameObject.Find("Game Manager").GetComponent<GameBehavior>();
     }
 
     void Update()
