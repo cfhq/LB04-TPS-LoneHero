@@ -66,7 +66,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.name == "Player")
+        if (other.CompareTag("Player"))
         {
             Debug.Log("Player detected!");
 
@@ -80,6 +80,12 @@ public class EnemyBehavior : MonoBehaviour
             {
                 _agent.destination = _player.position;
             }
+        }
+
+        else if(other.CompareTag("Bullet"))
+        {
+            TakeDamage(1);
+            Destroy(other.gameObject);
         }
     }
 
@@ -103,5 +109,10 @@ public class EnemyBehavior : MonoBehaviour
             EnemyLives -= 1;
             Debug.Log("Critical hit! Enemy lives: " + _enemyLives);
         }
+    }
+
+    private void TakeDamage(int amount)
+    {
+        EnemyLives -= amount;
     }
 }
