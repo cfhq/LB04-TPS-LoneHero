@@ -12,6 +12,7 @@ public class EnemyBehavior : MonoBehaviour
     private int _locationIndex = 0;
 
     private Transform _player;
+    private bool _playerInRange = false;
 
     void Start()
     {
@@ -35,6 +36,12 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
+        if (_playerInRange && _agent != null && _player != null)
+        {
+            _agent.SetDestination(_player.position);
+            return;
+        }
+
         if (_locations.Count > 0 && _agent.remainingDistance < 0.5f && !_agent.pathPending)
         {
             MoveToNextPatrolLocation();
@@ -91,7 +98,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.name == "Player")
+        if (other.CompareTag("Player"))
         {
             Debug.Log("Player out of range");
 

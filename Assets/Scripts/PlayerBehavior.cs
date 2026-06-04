@@ -17,6 +17,7 @@ public class PlayerBehavior : MonoBehaviour
     public bool IsOnGround = true;
     public float GroundCheckRadius = 1.05f;
     public LayerMask GroundLayer;
+    public Transform GroundCheck;
 
     public GameObject Bullet;
     public float BulletSpeed = 100f;
@@ -35,6 +36,16 @@ public class PlayerBehavior : MonoBehaviour
         _vInput = Input.GetAxis("Vertical") * moveSpeed;
         _hInput = Input.GetAxis("Horizontal") * rotateSpeed;
         IsOnGround = Physics.CheckSphere(transform.position, GroundCheckRadius, GroundLayer);
+
+        IsOnGround = Physics.CheckSphere(
+            GroundCheck.position,
+            GroundCheckRadius,
+            GroundLayer
+        );
+
+        Debug.Log("Grounded: " + IsOnGround);
+        Debug.Log("Ground Layer Mask: " + GroundLayer.value);
+
 
         if (Input.GetKeyDown(KeyCode.Space) && IsOnGround)
         {
@@ -69,6 +80,6 @@ public class PlayerBehavior : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, GroundCheckRadius);
+        Gizmos.DrawWireSphere(GroundCheck.position, GroundCheckRadius);
     }
 }

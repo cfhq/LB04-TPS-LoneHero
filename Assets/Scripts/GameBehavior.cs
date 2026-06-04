@@ -17,6 +17,8 @@ public class GameBehavior : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1f;
+
         ItemText.text = "Items: " + _itemsCollected;
         HealthText.text = "Health: " + _playerHP;
 
@@ -75,7 +77,7 @@ public class GameBehavior : MonoBehaviour
 
     public void RestartScene()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(0);
-        Time.timeScale = 0f;
     }
 }
