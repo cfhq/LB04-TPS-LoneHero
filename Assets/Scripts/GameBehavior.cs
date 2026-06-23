@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameBehavior : MonoBehaviour
 {
@@ -12,8 +11,8 @@ public class GameBehavior : MonoBehaviour
     public TMP_Text HealthText;
     public TMP_Text ItemText;
     public TMP_Text ProgressText;
-    public Button WinButton;
-    public Button LossButton;
+    public GameObject WinPanel;
+    public GameObject LossPanel;
 
     void Start()
     {
@@ -22,8 +21,8 @@ public class GameBehavior : MonoBehaviour
         ItemText.text = "Items: " + _itemsCollected;
         HealthText.text = "Health: " + _playerHP;
 
-        if (WinButton != null) WinButton.gameObject.SetActive(false);
-        if (LossButton != null) LossButton.gameObject.SetActive(false);
+        if (WinPanel != null) WinPanel.SetActive(false);
+        if (LossPanel != null) LossPanel.SetActive(false);
     }
 
     public int Items
@@ -32,19 +31,19 @@ public class GameBehavior : MonoBehaviour
         set
         {
             _itemsCollected = value;
-            ItemText.text = "Items: " + _itemsCollected;
+            ItemText.text = "Supplies: " + _itemsCollected;
 
             if (_itemsCollected >= MaxItems)
             {
-                ProgressText.text = "You've found all the items!";
-                if (WinButton != null)
-                    WinButton.gameObject.SetActive(true);
+                ProgressText.text = "You successfully collected all supplies!";
+                if (WinPanel != null)
+                    WinPanel.SetActive(true);
                 Time.timeScale = 0f;
             }
             else
             {
                 int remaining = MaxItems - _itemsCollected;
-                ProgressText.text = "Item found, only " + remaining + " more to go!";
+                ProgressText.text = "Supply collected, " + remaining + " more to go!";
             }
         }
     }
@@ -56,16 +55,15 @@ public class GameBehavior : MonoBehaviour
         {
             _playerHP = value;
             HealthText.text = "Health: " + _playerHP;
-            Debug.LogFormat("Lives: {0}", _playerHP);
 
             if (_playerHP <= 0)
             {
-                UpdateScene("You want another life with that?");
-                if (LossButton != null) LossButton.gameObject.SetActive(true);
+                UpdateScene("You lost all health points!");
+                if (LossPanel != null) LossPanel.SetActive(true);
             }
             else
             {
-                ProgressText.text = "Ouch... that's got hurt.";
+                ProgressText.text = "Ouch... be careful! -2 Health points.";
             }
         }
     }

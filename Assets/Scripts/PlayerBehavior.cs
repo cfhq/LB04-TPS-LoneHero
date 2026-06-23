@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour

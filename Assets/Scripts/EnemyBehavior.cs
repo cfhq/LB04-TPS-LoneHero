@@ -8,7 +8,7 @@ public class EnemyBehavior : MonoBehaviour
     private NavMeshAgent _agent;
 
     public Transform PatrolRoute;
-    private List<Transform> _locations = new List<Transform>();
+    private List<Vector3> _localRouteOffsets = new List<Vector3>();
     private int _locationIndex = 0;
 
     private Transform _player;
@@ -20,15 +20,17 @@ public class EnemyBehavior : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _player = GameObject.Find("Player").transform;
 
+        _localRouteOffsets.Clear();
         if (PatrolRoute != null)
         {
             foreach (Transform child in PatrolRoute)
             {
-                _locations.Add(child);
+                Vector3 localOffset = PatrolRoute.InverseTransformPoint(child.position);
+                _localRouteOffsets.Add(localOffset);
             }
         }
 
-        if (_locations.Count > 0)
+        if (_localRouteOffsets.Count > 0)
         {
             MoveToNextPatrolLocation();
         }
@@ -42,7 +44,7 @@ public class EnemyBehavior : MonoBehaviour
             return;
         }
 
-        if (_locations.Count > 0 && _agent.remainingDistance < 0.5f && !_agent.pathPending)
+        if (_localRouteOffsets.Count > 0 && _agent != null && !_agent.pathPending && _agent.remainingDistance < 0.5f)
         {
             MoveToNextPatrolLocation();
         }
@@ -50,10 +52,12 @@ public class EnemyBehavior : MonoBehaviour
 
     void MoveToNextPatrolLocation()
     {
-        if (_locations.Count == 0) return;
+        if (_localRouteOffsets.Count == 0 || _agent == null) return;
 
-        _agent.destination = _locations[_locationIndex].position;
-        _locationIndex = (_locationIndex + 1) % _locations.Count;
+        Vector3 targetWorld = transform.TransformPoint(_localRouteOffsets[_locationIndex]);
+        _agent.SetDestination(targetWorld);
+
+        _locationIndex = (_locationIndex + 1) % _localRouteOffsets.Count;
     }
 
     private int _enemyLives = 3;
@@ -89,7 +93,7 @@ public class EnemyBehavior : MonoBehaviour
             }
         }
 
-        else if(other.CompareTag("Bullet"))
+        else if (other.CompareTag("Bullet"))
         {
             TakeDamage(1);
             Destroy(other.gameObject);
@@ -102,7 +106,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             Debug.Log("Player out of range");
 
-            if (_locations.Count > 0)
+            if (_localRouteOffsets.Count > 0)
             {
                 MoveToNextPatrolLocation();
             }
