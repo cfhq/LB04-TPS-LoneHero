@@ -2,6 +2,10 @@
 
 Space Lone Hero is a 3D exploration and survival game developed with Unity. Players must navigate a space sanctuary, collect scattered supplies, and avoid hostile space bandits patrolling the area.
 
+## Play the Game
+
+https://clalalalala.itch.io/space-lonehero
+
 ## Gameplay
 
 The objective is to recover an amount of supply crates while surviving enemy encounters. Bandits patrol the sanctuary and will damage the player when they get too close. Players can explore the environment freely, evade enemies, or fight back using shooters.
@@ -32,3 +36,7 @@ The objective is to recover an amount of supply crates while surviving enemy enc
 ## Author
 
 Developed as a Game Programming final project using Unity and C#.
+
+## License
+
+This project was created for educational and portfolio purposes.
